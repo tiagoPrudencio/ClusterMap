@@ -35,6 +35,7 @@
 *.exe
 *.o
 *.so
+*.bat
 
 # Packages #
 ############
@@ -64,3 +65,9 @@
 .Trashes
 thumbs.db
 Thumbs.db
+
+.i18n/
+.test/
+.scripts/
+.help/
+._pycache_/
