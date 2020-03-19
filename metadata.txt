@@ -1,0 +1,39 @@
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=Clustering
+qgisMinimumVersion=3.0
+description=Receives polygon shapefile as input and applies clustering methods for the generation of choropleth maps 
+version=0.1
+author=Prudencio T. and Maia B.
+email=tiagoprudencio16@gmail.com
+
+about=The plugin receives polygon shapefile as input and applies clustering methods (k-mean and hierarchical clustering) for the generation of choropleth maps according to user-defined settings: attributes, similarity metric, and the number of clusters.
+
+tracker=http://bugs
+repository=http://repo
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=python
+
+homepage=http://homepage
+category=Plugins
+icon=icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+

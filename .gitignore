@@ -24,6 +24,7 @@
 *.docx
 *.rtf
 *.pdf
+*.html
 
 # following taken from https://help.github.com/articles/ignoring-files
 
@@ -36,6 +37,7 @@
 *.o
 *.so
 *.bat
+*.ui
 
 # Packages #
 ############
@@ -66,8 +68,11 @@
 thumbs.db
 Thumbs.db
 
-.i18n/
-.test/
-.scripts/
-.help/
-._pycache_/
+i18n/
+test/
+scripts/
+help/
+__pycache__/
+/Makefile.*
+/plugin_upload.*
+/pb_tool.*
