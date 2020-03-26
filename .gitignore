@@ -36,8 +36,7 @@
 *.exe
 *.o
 *.so
-*.bat
-*.ui
+
 
 # Packages #
 ############
@@ -68,11 +67,3 @@
 thumbs.db
 Thumbs.db
 
-i18n/
-test/
-scripts/
-help/
-__pycache__/
-/Makefile.*
-/plugin_upload.*
-/pb_tool.*
