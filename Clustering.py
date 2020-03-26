@@ -40,7 +40,7 @@ import matplotlib.pyplot as plt
 class Clustering:
     """QGIS Plugin Implementation."""
 
-    def __init__(self, iface):
+    def __init__(self,iface):
         """Constructor.
 
         :param iface: An interface instance that will be passed to this class
@@ -177,7 +177,6 @@ class Clustering:
         # will be set False in run()
         self.first_start = True
 
-
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
@@ -187,7 +186,8 @@ class Clustering:
             self.iface.removeToolBarIcon(action)
 
     def attribute_choice ():
-        print('func has benn called')            
+        print('func has benn called') 
+          
 
     def run(self):
         """Run method that performs all the real work"""
