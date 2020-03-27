@@ -32,6 +32,7 @@ __revision__ = '$Format:%H$'
 
 from qgis.core import QgsProcessingProvider
 from .kmeansclusteringalgorithm import KMeansClusteringAlgorithm
+from .hierarchicalclusteringalgorithm import HierarchicalClusteringAlgorithm
 
 
 class ClusteringProvider(QgsProcessingProvider):
@@ -51,7 +52,8 @@ class ClusteringProvider(QgsProcessingProvider):
     
     def getAlgList(self):
         algList = [
-            KMeansClusteringAlgorithm()
+            KMeansClusteringAlgorithm(),
+            HierarchicalClusteringAlgorithm()
         ]
         return algList
 
