@@ -36,4 +36,4 @@ experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
-plugin_dependencies=numpy,sklearn,scipy,matplotlib
+plugin_dependencies=numpy,scipy,scikit-learn,matplotlib
