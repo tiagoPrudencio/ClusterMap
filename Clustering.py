@@ -36,6 +36,8 @@ import scipy.cluster.hierarchy as sch
 import numpy as np
 import matplotlib.pyplot as plt
 
+from .clustering_provider.clustering_provider import ClusteringProvider
+
 
 class Clustering:
     """QGIS Plugin Implementation."""
@@ -73,6 +75,12 @@ class Clustering:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
+        self.provider = None
+    
+    def initProcessing(self):
+        """Init Processing provider for QGIS >= 3.8."""
+        self.provider = ClusteringProvider()
+        QgsApplication.processingRegistry().addProvider(self.provider)
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -176,6 +184,7 @@ class Clustering:
 
         # will be set False in run()
         self.first_start = True
+        self.initProcessing()
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -184,6 +193,7 @@ class Clustering:
                 self.tr(u'&Clustering'),
                 action)
             self.iface.removeToolBarIcon(action)
+        QgsApplication.processingRegistry().removeProvider(self.provider)
 
     def attribute_choice ():
         print('func has benn called') 
