@@ -25,7 +25,8 @@ from qgis.core import (QgsProcessing,
                        QgsFeature
                        )
 from qgis import processing
-
+from sklearn.cluster import KMeans
+import numpy as np
 
 class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
     """
@@ -112,7 +113,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
             context
         )
         
-        fieldList = self.parameterAsFields(
+        attributeList = self.parameterAsFields(
             parameters,
             self.ATTRIBUTES,
             context
@@ -140,16 +141,6 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
             source.sourceCrs()
         )
 
-        # Send some information to the user
-        feedback.pushInfo('CRS is {}'.format(source.sourceCrs().authid()))
-        feedback.pushInfo('Meus atributos sao {lista_atributos}'.format(
-                lista_atributos=','.join(fieldList)
-            )
-        )
-        feedback.pushInfo(
-            'N_Clusters: {}'.format(n_clusters)
-        )
-
         # If sink was not created, throw an exception to indicate that the algorithm
         # encountered a fatal error. The exception text can be any string, but in this
         # case we use the pre-built invalidSinkError method to return a standard
@@ -162,8 +153,10 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
         total = 100.0 / source.featureCount() if source.featureCount() else 0
         features = source.getFeatures()
 
-        #X = self.input_attr()
-        #kmeans = KMeans(n_clusters = n_clusters, random_state=20).fit(X)
+        X = self.get_data_from_source(source, attributeList)
+        kmeans = KMeans(
+            n_clusters=n_clusters,
+            random_state=20).fit(X)
 
         for current, feature in enumerate(features):
             # Stop the algorithm if cancel button has been clicked
@@ -172,45 +165,19 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
             newFeat = QgsFeature(fields)
             for field in source.fields():
                 newFeat[field.name()] = feature[field.name()]
+            newFeat.setGeometry(feature.geometry())
             # Add a feature in the sink
-            newFeat['cluster'] = 10#int(kmeans.labels_[i])
+            newFeat['cluster'] = int(kmeans.labels_[current])
             sink.addFeature(newFeat, QgsFeatureSink.FastInsert)
 
             # Update the progress bar
             feedback.setProgress(int(current * total))
-
-        # To run another Processing algorithm as part of this algorithm, you can use
-        # processing.run(...). Make sure you pass the current context and feedback
-        # to processing.run to ensure that all temporary layer outputs are available
-        # to the executed algorithm, and that the executed algorithm can send feedback
-        # reports to the user (and correctly handle cancellation and progress reports!)
-        #if False:
-        #    buffered_layer = processing.run("native:buffer", {
-        #        'INPUT': dest_id,
-        #        'DISTANCE': 1.5,
-        #        'SEGMENTS': 5,
-        #        'END_CAP_STYLE': 0,
-        #        'JOIN_STYLE': 0,
-        #        'MITER_LIMIT': 2,
-        #        'DISSOLVE': False,
-        #        'OUTPUT': 'memory:'
-        #    }, context=context, feedback=feedback)['OUTPUT']
-
-        # Return the results of the algorithm. In this case our only result is
-        # the feature sink which contains the processed features, but some
-        # algorithms may return multiple feature sinks, calculated numeric
-        # statistics, etc. These should all be included in the returned
-        # dictionary, with keys matching the feature corresponding parameter
-        # or output names.
         return {self.OUTPUT: dest_id}
     
-    def input_attr (self):
-        layer = self.dlg.comboBox.currentData()
+    def get_data_from_source(self, source, attributeList):
         X = list()
-        for feature in layer.getFeatures():
-            data = list()
-            for index in range(self.dlg.listWidget_2.count()):
-                data.append(feature[self.dlg.listWidget_2.item(index).text()])
+        for feature in source.getFeatures():
+            data = [feature[attr] for attr in attributeList]
             X.append(data)
         return np.array(X)
 
@@ -246,7 +213,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
         Returns the name of the group this algorithm belongs to. This string
         should be localised.
         """
-        return self.tr('Example scripts')
+        return self.tr('Clustering Methods')
 
     def groupId(self):
         """
@@ -256,7 +223,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
         contain lowercase alphanumeric characters only and no spaces or other
         formatting characters.
         """
-        return 'examplescripts'
+        return 'clusteringmethods'
 
     def shortHelpString(self):
         """
