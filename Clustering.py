@@ -21,20 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt5.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QThread, pyqtSignal, QVariant
+from PyQt5.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction,QFileDialog
-from qgis.core import *
+
+from qgis.core import QgsProcessingAlgorithm, QgsApplication
+import processing
+from .clustering_provider.clustering_provider import ClusteringProvider
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Import the code for the dialog
 from .Clustering_dialog import ClusteringDialog
 import os.path
-from sklearn.cluster import KMeans
-from sklearn.cluster import AgglomerativeClustering
-import scipy.cluster.hierarchy as sch
-import numpy as np
-import matplotlib.pyplot as plt
+
 
 
 class Clustering:
@@ -73,6 +72,12 @@ class Clustering:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
+        self.provider = None
+    
+    def initProcessing(self):
+        """Init Processing provider for QGIS >= 3.8."""
+        self.provider = ClusteringProvider()
+        QgsApplication.processingRegistry().addProvider(self.provider)
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -166,84 +171,41 @@ class Clustering:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-
+        '''
         icon_path = ':/plugins/Clustering/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Clustering'),
+            text=self.tr(u'Graph'),
             callback=self.run,
             parent=self.iface.mainWindow())
-
+        '''
         # will be set False in run()
         self.first_start = True
+        self.initProcessing()
 
     def unload(self):
+        QgsApplication.processingRegistry().removeProvider(self.provider)
         """Removes the plugin menu item and icon from QGIS GUI."""
+        '''
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&Clustering'),
+                self.tr(u'&Graph'),
                 action)
-            self.iface.removeToolBarIcon(action)
+            self.iface.removeToolBarIcon(action)  
+        '''
 
     def attribute_choice ():
         print('func has benn called') 
-          
+    
+        
 
     def run(self):
         """Run method that performs all the real work"""
-
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
         if self.first_start == True:
             self.first_start = False
             self.dlg = ClusteringDialog()
-
-        self.dlg.tabWidget.setCurrentIndex(0)
-        self.dlg.comboBox.clear()
-        self.dlg.comboBox.addItem('[Select Layer]',None)
-        for layer in self.iface.mapCanvas().layers():
-            if isinstance(layer, QgsVectorLayer):
-                if layer.geometryType()== QgsWkbTypes.PolygonGeometry:
-                    self.dlg.comboBox.addItem(layer.name(),layer)
-
-        self.dlg.comboBox.currentTextChanged.connect(self.show_attributes)
-
-        self.dlg.listWidget.itemClicked.connect(self.attribute_out)
-
-        self.dlg.listWidget_2.itemClicked.connect(self.attribute_down)
-
-    
-        self.dlg.radioButton_3.setChecked(True)
-        self.dlg.textEdit.append('K-Means \nalgorithm clusters data by trying to separate samples in n groups of equal variance, minimizing a criterion known as the inertia or within-cluster sum-of-squares ')
-
-        self.dlg.radioButton_3.toggled.connect(self.kmeans_clicked)
-        self.dlg.radioButton_2.clicked.connect(self.hierarchical_clicked)
-        self.dlg.radioButton_4.toggled.connect(self.euclidian_clicked)
-        self.dlg.radioButton_5.clicked.connect(self.mahalanobis_clicked)
-        self.dlg.radioButton_6.toggled.connect(self.ward_clicked)
-        self.dlg.radioButton_7.clicked.connect(self.complink_clicked)
-        self.dlg.radioButton_8.clicked.connect(self.avelink_clicked)
-        self.dlg.radioButton_9.clicked.connect(self.singlink_clicked)
-
-    
-        
-        self.dlg.groupBox_2.setEnabled(False)
-        self.dlg.groupBox_3.setEnabled(False) 
-
-        self.dlg.spinBox.setMinimum (2)
-        self.dlg.spinBox.setMaximum (10)
-        
-
-        self.dlg.lineEdit.setText('[Create Temporary Layer]')
-
-        self.dlg.toolButton.clicked.connect(self.open_file)
-        self.dlg.toolButton_2.clicked.connect(self.ncluster_graph)
-
-
-        
-        self.dlg.pushButton_3.clicked.connect(self.process)
-        self.dlg.progressBar.setMaximum(100)
-
 
         # show the dialog
         self.dlg.show()
@@ -253,182 +215,8 @@ class Clustering:
         if result:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
-            pass 
-
-    def show_attributes(self):
-        self.dlg.listWidget_2.clear()
-        self.dlg.listWidget.clear()
-        if self.dlg.comboBox.currentData()==None:
             pass
-        else:
-            layer = self.dlg.comboBox.currentData()
-            self.dlg.listWidget.addItems(layer.fields().names())
-
-    def attribute_out(self,item):
-        self.dlg.listWidget_2.addItem(item.text())
-        aux=self.dlg.listWidget.takeItem(self.dlg.listWidget.row(item))
-        
-           
-    def attribute_down(self,item):
-        self.dlg.listWidget.addItem(item.text())
-        aux=self.dlg.listWidget_2.takeItem(self.dlg.listWidget_2.row(item))
-
-    def kmeans_clicked(self):
-        self.dlg.groupBox_2.setEnabled(False)
-        self.dlg.groupBox_3.setEnabled(False)
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('K-Means \nalgorithm clusters data by trying to separate samples in n groups of equal variance, minimizing a criterion known as the inertia or within-cluster sum-of-squares ')
-
-    def ward_clicked(self):
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Ward')
-        self.dlg.textEdit.append('Minimizes the sum of squared differences within all clusters. It is a variance-minimizing approach and in this sense is similar to the k-means objective function but tackled with an agglomerative hierarchical approach.')
-        self.dlg.radioButton_5.setEnabled(False)
-    
-
-    def euclidian_clicked(self):
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Text about euclidian metric ')
         
 
-    def mahalanobis_clicked(self):
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Text about  mahalanobis metric ')
-        
-
-    def complink_clicked(self):
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Text about complete linkage methods ')
-        self.dlg.radioButton_5.setEnabled(True)
-        
-
-    def avelink_clicked(self):
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Text about average linkage methods ')
-        self.dlg.radioButton_5.setEnabled(True)
-        
-
-    def singlink_clicked(self):
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Text about single linkage methods ')
-        self.dlg.radioButton_5.setEnabled(True)
-        
-
-    def spin_value(self):
-       #return self.dlg.spinBox.value()
-       pass
-
-    def input_attr (self):
-        layer = self.dlg.comboBox.currentData()
-        X = list()
-        for feature in layer.getFeatures():
-            data = list()
-            for index in range(self.dlg.listWidget_2.count()):
-                data.append(feature[self.dlg.listWidget_2.item(index).text()])
-            X.append(data)
-        return np.array(X)
-
-    def metric(self):
-        metrics =[self.dlg.radioButton_4,self.dlg.radioButton_5]
-        for metric in metrics:
-            if metric.isChecked():
-                return metric.text()
-
-
-    def ncluster_graph(self):
-        X = self.input_attr()
-
-        if self.dlg.radioButton_3.isChecked():
-            wcss = []
-            for i in range(2, 10):
-                kmeans = KMeans(n_clusters = i, init = 'k-means++', random_state = 42)
-                kmeans.fit(X)
-                wcss.append(kmeans.inertia_)
-            plt.plot(range(2, 10), wcss)
-            plt.title('The Elbow Method')
-            plt.xlabel('Number of clusters')
-            plt.ylabel('Sum of squared distances')
-            plt.show()
-        else:
-            metric = self.metric()
-            methods =[self.dlg.radioButton_6,self.dlg.radioButton_7,self.dlg.radioButton_8,self.dlg.radioButton_9]
-            for method in methods:
-                if method.isChecked():
-                    dendrogram = sch.dendrogram(sch.linkage(X, method = method.text() ))
-                    plt.title('Dendrogram')
-                    plt.xlabel('attributes')
-                    plt.ylabel(metric)
-                    plt.show()
-                pass
-            
-
-    def hierarchical_clicked(self):
-        self.dlg.groupBox_2.setEnabled(True)
-        self.dlg.groupBox_3.setEnabled(True)
-        self.dlg.radioButton_6.setChecked(True)
-        self.dlg.radioButton_4.setChecked(True)
-        self.dlg.textEdit.clear()
-        self.dlg.textEdit.append('Hierarchical clustering \nGeneral family of clustering algorithms that build nested clusters by merging or splitting them successively. This hierarchy of clusters is represented as a tree (or dendrogram). The root of the tree is the unique cluster that gathers all the samples, the leaves being the clusters with only one sample ')
-
-
-    def open_file(self):
-        result=(QFileDialog.getSaveFileName(filter = ("SHP FILE (*.shp)")))
-        if result[0] == '':
-            self.dlg.lineEdit.setText('[Create Temporary Layer]')
-        else:    
-            self.dlg.lineEdit.setText('{}'.format(result[0]))
-
-        
-
-
-    def process (self):
-        try:
-            layer = self.dlg.comboBox.currentData()
-            feats = [feat for feat in layer.getFeatures()]
-            attr = layer.dataProvider().fields().toList()
-            new_layer = QgsVectorLayer("Polygon", "duplicated_layer", "memory")
-            new_layer_data = new_layer.dataProvider()
-            new_layer_data.addAttributes(attr)
-            new_layer_data.addAttributes([QgsField("cluster", QVariant.Int)])
-            new_layer_data.addFeatures(feats)
-            new_layer.crs().createFromString(layer.crs().authid())
-            new_layer.updateFields()
-        
-        except:
-            print('without layer')
-
-        X = self.input_attr()
-        if self.dlg.radioButton_3.isChecked():
-            
-            kmeans = KMeans(n_clusters = int(self.dlg.spinBox.value()),random_state=20).fit(X)
-            new_layer.startEditing()
-            for i,feature in enumerate(new_layer.getFeatures()):
-                new_layer.changeAttributeValue(feature.id(),new_layer.fields().indexFromName('cluster'),int(kmeans.labels_[i]))
-            new_layer.commitChanges()
-
-            self.dlg.tabWidget.setCurrentIndex(1)    
-
-        else:
-            metric = self.metric()
-    
-            methods =[self.dlg.radioButton_6,self.dlg.radioButton_7,self.dlg.radioButton_8,self.dlg.radioButton_9]
-            for method in methods:
-                if method.isChecked():
-                    model = AgglomerativeClustering(n_clusters = int(self.dlg.spinBox.value()), affinity = metric, linkage = method.text()).fit(X)
-                    new_layer.startEditing()
-                    for i,feature in enumerate(new_layer.getFeatures()):
-                        new_layer.changeAttributeValue(feature.id(),new_layer.fields().indexFromName('cluster'),int(model.labels_[i]))
-            new_layer.commitChanges()
-
-            self.dlg.tabWidget.setCurrentIndex(1)   
-        
-        if self.dlg.lineEdit.text()=='[Create Temporary Layer]':
-            QgsProject.instance().addMapLayer(new_layer)
-        else:
-            #QgsVectorFileWriter.writeAsVectorFormat(new_layer, self.dlg.lineEdit.text(),'utf-8',"CP1250", None, "ESRI Shapefile")
-            #QgsVectorFileWriter.writeAsVectorFormat(new_layer, self.dlg.lineEdit.text(),'utf-8', "ESRI Shapefile")
-           pass
-        
-        
 
         
