@@ -5,7 +5,7 @@ This plugin was developed on Open Source QGIS software, allowing users to analyz
 
 ![Sem título](https://user-images.githubusercontent.com/52215653/87994825-49df6780-cac4-11ea-9674-ab394500cbd8.png)
 
-# Install Requirements
+## Install Requirements
 you’ll need to install:
 
 * QGIS
