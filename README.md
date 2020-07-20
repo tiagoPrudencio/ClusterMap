@@ -19,4 +19,3 @@ You’ll need to install (or have installed):
     
   See (for Windows), https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows
     
-![train](https://user-images.githubusercontent.com/62348486/87995989-64ffa680-cac7-11ea-8436-3165d86d16e8.png)
