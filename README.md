@@ -6,12 +6,13 @@ This plugin was developed on Open Source QGIS software, allowing users to analyz
 ![Sem título](https://user-images.githubusercontent.com/52215653/87994825-49df6780-cac4-11ea-9674-ab394500cbd8.png)
 
 ## Install Requirements
-you’ll need to install:
+You’ll need to install (or have installed):
 
 * QGIS
 
   See https://www.qgis.org for tutorials and more guides.
-* Package Python:
+  
+* Python Packages:
     * Numpy
     * Matplotlib
     * Scikit-learn
