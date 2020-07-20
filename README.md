@@ -3,6 +3,8 @@
 
 This plugin was developed on Open Source QGIS software, allowing users to analyze multivariate data through of clustering methods ( k-means and hierarchical),  in addition to allowing the visualization of the clusters from choropleth maps. 
 
+![Sem título](https://user-images.githubusercontent.com/52215653/87994825-49df6780-cac4-11ea-9674-ab394500cbd8.png)
+
 Install Requirements
 you’ll need to install:
 
