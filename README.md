@@ -8,14 +8,14 @@ This plugin was developed on Open Source QGIS software, allowing users to analyz
 ## Install Requirements
 You’ll need to install (or have installed):
 
-* QGIS
-
-  See https://www.qgis.org for tutorials and more guides.
+ * QGIS
+ 
+   See https://www.qgis.org for tutorials and more guides.
   
 * Python Packages:
-    * Numpy
-    * Matplotlib
-    * Scikit-learn
+    - [X] Numpy
+    - [X] Matplotlib
+    - [X] Scikit-learn
     
   See (for Windows), https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows
   
