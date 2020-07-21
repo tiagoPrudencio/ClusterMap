@@ -159,7 +159,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 
 		kmeans = KMeans(
 			n_clusters=n_clusters,
-			random_state= 42).fit(X)
+			random_state= 0).fit(X)
 
 		current = 0
 		X_ = list()
