@@ -25,7 +25,7 @@ You can follow the guidelines from tutorialPlugin.pdf for plugin installation
 
 ## Developers
 
-* **Tiago P. Silvano** - *Cartographic Engineer - tiagoprudencio16@gmail.com
-* **Bryan M. Correa** - *Cartographic Engineer - bryan.maia.c7@gmail.com
+* **Tiago P. Silvano** - *Cartographic Engineer* - tiagoprudencio16@gmail.com
+* **Bryan M. Correa** - *Cartographic Engineer* - bryan.maia.c7@gmail.com
 
     
