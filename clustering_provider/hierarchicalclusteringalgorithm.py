@@ -24,13 +24,14 @@ from qgis.core import (QgsProcessing,
 					   QgsProcessingParameterEnum,
 					   QgsField,
 					   QgsVectorLayerUtils,
-					   QgsFeature
+					   QgsFeature,
+					   QgsProcessingFeedback
 					   )
 #from qgis import processing
 from sklearn.cluster import AgglomerativeClustering
 from processing.gui.wrappers import WidgetWrapper
 from clustering.gui.ProcessingUI.hierarchicalWrapper import hierarchicalWrapper
-import numpy as np
+from clustering.classification.classification import classification
 
 class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 	"""
@@ -114,9 +115,11 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 		)
 
 		source = param['layer']
-		method = param['method']
-		metric = param['metric']
-		X = param['attributeList']
+		method = param['method'][0]
+		metric = param['metric'][0]
+		X = param['dataset']
+		excluded = param['id']
+		attr = param['attributes']
 
 		n_clusters = self.parameterAsInt(
 			parameters,
@@ -160,7 +163,10 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 			n_clusters=n_clusters,
 			affinity=metric,
 			linkage=method).fit(X)
-		for current, feature in enumerate(features):
+
+		current=0
+		X_ = list()
+		for feature in features:
 			# Stop the algorithm if cancel button has been clicked
 			if feedback.isCanceled():
 				break
@@ -169,12 +175,27 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 				newFeat[field.name()] = feature[field.name()]
 			newFeat.setGeometry(feature.geometry())
 			# Add a feature in the sink
-			newFeat['cluster'] = int(model.labels_[current])
+			if feature.id() in excluded:
+				pass
+			else:
+				newFeat['cluster'] = int(model.labels_[current])
+				current =current+1
+				aux = [feature[field] for field in attr ]
+				X_.append(aux)
+				
 			sink.addFeature(newFeat, QgsFeatureSink.FastInsert)
 
 			# Update the progress bar
 			feedback.setProgress(int(current * total))
+
+		legends = classification(X_,model.labels_,attr).decisionTree()
+		feedback.pushInfo('Rules of a Decision Tree:'+'\n')
+		for legend in sorted(legends):
+			feedback.pushInfo(legend+'\n')
+		
 		return {self.OUTPUT: dest_id}
+
+	
 	
 	def tr(self, string):
 		"""

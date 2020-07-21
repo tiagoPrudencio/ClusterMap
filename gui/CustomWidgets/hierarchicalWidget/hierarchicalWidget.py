@@ -20,6 +20,7 @@ class hierarchicalWidget(QtWidgets.QWidget, FORM_CLASS):
 		"""
 		super(hierarchicalWidget, self).__init__(parent)
 		self.iface = iface
+		self.parameters = dict()
 		self.setupUi(self)
 		self.setInitialState()
 		
@@ -39,13 +40,12 @@ class hierarchicalWidget(QtWidgets.QWidget, FORM_CLASS):
 	def on_comboBox_currentIndexChanged(self):
 		self.listWidget_2.clear()
 		self.listWidget.clear()
-		if self.comboBox.currentData()==None:
+		layer = self.comboBox.currentData()
+		if layer is None:
 			pass
-		else:
-			layer = self.comboBox.currentData()
-			for field in layer.fields():
-				if field.isNumeric():
-					self.listWidget.addItem(field.name())
+		elif layer is not None:
+			attributes = [field.name() for field in layer.fields() if field.isNumeric()]
+			self.listWidget.addItems(attributes)
 
 	@pyqtSlot(bool)
 	def on_toolButton_1_clicked(self):
@@ -78,46 +78,54 @@ class hierarchicalWidget(QtWidgets.QWidget, FORM_CLASS):
 		else:
 			self.radioButton_6.setEnabled(True)
 
-	@pyqtSlot(bool)
-	def on_pushButton_clicked(self):
-		try:
-			self.setParameter()
-			self.X = self.get_data_from_source()
-			createGraph(self.X,self.method).createDendrogram()
-		except:
-			self.messsage_box = QMessageBox.warning(self,"Kmeans", 'choose at least one attribute')
+	#@pyqtSlot(bool)
+	#def on_pushButton_clicked(self):
+		#try:
+			#self.setParameter()
+			#self.X = self.get_data_from_source()
+			#createGraph(self.X,self.method).createDendrogram()
+		#except:
+			#self.messsage_box = QMessageBox.warning(self,"Kmeans", 'choose at least one attribute')
    
 	def setParameter(self):
 		methods =[self.radioButton_1,self.radioButton_2,self.radioButton_3,self.radioButton_4]
-		for method in methods:
-			if method.isChecked():
-				self.method= method.text()
+		self.parameters['method'] = [method.text() for method in methods if method.isChecked()]
+		
 		metrics =[self.radioButton_5,self.radioButton_6]
-		for metric in metrics:
-			if metric.isChecked():
-				self.metric =  metric.text()
+		self.parameters['metric'] = [metric.text() for metric in metrics if metric.isChecked()]
+		
+
+	def filterNull(self,feature):
+		attributes = [self.listWidget_2.item(i).text() for i in range(self.listWidget_2.count())]
+		data = list()
+		for attr in attributes:
+			if feature[attr] is None:
+				self.parameters['id'].append(feature.id())
+				data = None
+				break
+			else:
+				data.append(feature[attr])
+		return(data)
 
 	def get_data_from_source(self):
-		X = list()
-		attributeList = list()
-		for i in range(self.listWidget_2.count()):
-			item = self.listWidget_2.item(i)
-			attributeList.append(item.text())
-		source = self.comboBox.currentData()
+		dataset = list()
+		self.parameters['layer'] = self.comboBox.currentData()
+		self.parameters['id'] = list()
 
-		for feature in source.getFeatures():
-			data = [feature[attr] for attr in attributeList]
-			X.append(data)
+
+		for feature in self.parameters['layer'].getFeatures():
+			data = self.filterNull(feature)
+			if data is not None:
+				dataset.append(data)
 
 		Standard_models = StandardScaler()
-		Standard_models.fit(np.array(X))
-		StandardX = Standard_models.transform(np.array(X))
+		Standard_models.fit(np.array(dataset))
+		StandardX = Standard_models.transform(np.array(dataset))
 		return StandardX
 
 	def getParameters(self):
 		self.setParameter()
-		Dict = {'layer':self.comboBox.currentData(),
-				'method':self.method,
-				'metric':self.metric,
-				'attributeList': self.get_data_from_source()}
-		return Dict
+		self.parameters['dataset'] = self.get_data_from_source()
+		self.parameters['attributes'] = [self.listWidget_2.item(i).text() for i in range(self.listWidget_2.count())]
+		return self.parameters
+		

@@ -32,7 +32,7 @@ class createGraph():
 		range_n_clusters = [i for i in range(2,10)]
 		result_avg = list()
 		for n_clusters in range_n_clusters:
-			clusterer = KMeans(n_clusters=n_clusters, random_state=10)
+			clusterer = KMeans(n_clusters=n_clusters, random_state=42)
 			cluster_labels = clusterer.fit_predict(self.X)
 			result_avg.append(silhouette_score(self.X, cluster_labels))
 
