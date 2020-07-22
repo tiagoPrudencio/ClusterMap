@@ -17,7 +17,7 @@ You’ll need to install (or have installed):
     - [X] Matplotlib
     - [X] Scikit-learn
     
-  See (for Windows), https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows
+  See (for Windows), https://www.bit.ly/2OOLCdT
   
 ## Installing
 
