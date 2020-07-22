@@ -17,7 +17,7 @@ You’ll need to install (or have installed):
     - [X] Matplotlib
     - [X] Scikit-learn
     
-  See (for Windows), bit.ly/2OOLCdT
+  See (for Windows), https://www.bit.ly/2OOLCdT
   
 ## Installing
 
