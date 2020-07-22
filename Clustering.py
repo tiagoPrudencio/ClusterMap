@@ -28,31 +28,18 @@ from qgis.PyQt.QtWidgets import QToolButton, QMenu
 
 from qgis.core import QgsProcessingAlgorithm, QgsApplication
 import processing
+import os.path
+from .clustering_provider.clustering_provider import ClusteringProvider
+import sys
+
+
+from clustering.requirements import requirements
+requirements()
+
 
 
 # Initialize Qt resources from file resources.py
 from .resources import *
-
-import os.path
-import sys
-
-from .clustering_provider.clustering_provider import ClusteringProvider
-
-pathPlugin = os.path.dirname(__file__)
-
-try:
-	import pip
-except:
-	execfile(os.path.join(pathPlugin, get-pip.py))
-	import pip
-
-try:
-	from sklearn.cluster import KMeans
-	from sklearn.cluster import AgglomerativeClustering
-except:
-	import subprocess
-	subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'scikit-learn'])
-	
 
 # Import the code for the dialog
 #from .Clustering_dialog import ClusteringDialog
