@@ -16,12 +16,16 @@ You’ll need to install (or have installed):
     - [X] Numpy
     - [X] Matplotlib
     - [X] Scikit-learn
-    
-  See (for Windows), https://www.bit.ly/2OOLCdT
+  
+  To install python packages, use requirements.txt file in **OSGEO4W** shell. The requirements file contains a list of packages to be installed using pip install.
+  
+  **Windows:** python -m pip install -r requirements.txt
+  
+  **Linux:**
   
 ## Installing
 
-You can follow the guidelines from tutorialPlugin.pdf for plugin installation
+You can follow the guidelines from tutorialPlugin.pdf for plugin installation (step by step)
 
 ## Developers
 
