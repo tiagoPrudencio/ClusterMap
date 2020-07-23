@@ -32,12 +32,6 @@ import os.path
 from .clustering_provider.clustering_provider import ClusteringProvider
 import sys
 
-
-from clustering.requirements import requirements
-requirements()
-
-
-
 # Initialize Qt resources from file resources.py
 from .resources import *
 
