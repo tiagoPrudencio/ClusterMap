@@ -8,12 +8,8 @@ def requirements():
 	messsage_box.setText('The Requirements Packages Python will be installed:\n - Numpy\n - Matplotlib\n - Scikit-learn')
 	messsage_box.setStandardButtons(QMessageBox.Ok)
 	returnValue = messsage_box.exec()
-	messsage_box.buttonClicked.connect(packageInstalle)
+	messsage_box.buttonClicked.connect(packageInstaller)
 
 def packageInstaller():
-	# install scikit-learn package
-	subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'scikit-learn'])
-	# install Numpy package
-	subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy'])
-	# install Matplotlib package
-	subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'])
+	# install package
+	subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
