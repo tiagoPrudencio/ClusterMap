@@ -20,8 +20,7 @@ You’ll need to install (or have installed):
   To install python packages, use requirements.txt file in **OSGEO4W** shell. The requirements file contains a list of packages to be installed using pip install.
   
   **Windows:** python -m pip install -r requirements.txt
-  
-  **Linux:**
+ 
   
 ## Installing
 
