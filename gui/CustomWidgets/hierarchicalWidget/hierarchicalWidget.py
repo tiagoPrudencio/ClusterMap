@@ -7,7 +7,6 @@ from PyQt5 import QtGui
 import os
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from clustering.graph.graph import createGraph
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
 	os.path.dirname(__file__), 'hierarchicalWidget.ui'))

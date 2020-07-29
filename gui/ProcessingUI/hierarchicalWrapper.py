@@ -1,4 +1,4 @@
-from clustering.gui.CustomWidgets.hierarchicalWidget.hierarchicalWidget import hierarchicalWidget
+from ClusterMap.gui.CustomWidgets.hierarchicalWidget.hierarchicalWidget import hierarchicalWidget
 from processing.gui.wrappers import WidgetWrapper
 
 class hierarchicalWrapper(WidgetWrapper):

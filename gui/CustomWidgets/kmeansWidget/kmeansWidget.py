@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMessageBox
 import os
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from clustering.graph.graph import createGraph
+from ClusterMap.graph.graph import createGraph
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
 	os.path.dirname(__file__), 'kmeansWidget.ui'))

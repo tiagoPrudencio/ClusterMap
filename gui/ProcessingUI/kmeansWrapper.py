@@ -1,4 +1,4 @@
-from clustering.gui.CustomWidgets.kmeansWidget.kmeansWidget import kmeansWidget
+from ClusterMap.gui.CustomWidgets.kmeansWidget.kmeansWidget import kmeansWidget
 from processing.gui.wrappers import WidgetWrapper
 
 class kmeansWrapper(WidgetWrapper):
