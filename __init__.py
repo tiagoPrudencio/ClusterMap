@@ -32,5 +32,6 @@ def classFactory(iface):  # pylint: disable=invalid-name
     :type iface: QgsInterface
     """
     #
-    from .Clustering import Clustering
+    #from .Clustering import Clustering
+    from .ClusterMap import Clustering
     return Clustering(iface)

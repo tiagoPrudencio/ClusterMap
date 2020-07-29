@@ -28,8 +28,8 @@ from qgis.core import (QgsProcessing,
 #from qgis import processing
 from sklearn.cluster import KMeans
 from processing.gui.wrappers import WidgetWrapper
-from clustering.gui.ProcessingUI.kmeansWrapper import kmeansWrapper
-from clustering.classification.classification import classification
+from CLusterMap.gui.ProcessingUI.kmeansWrapper import kmeansWrapper
+from ClusterMap.classification.classification import classification
 
 
 

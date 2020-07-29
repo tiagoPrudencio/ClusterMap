@@ -70,7 +70,7 @@ class ClusteringProvider(QgsProcessingProvider):
         string should be a unique, short, character only string, eg "qgis" or
         "gdal". This string should not be localised.
         """
-        return 'clustering'
+        return 'ClusterMap'
 
     def name(self):
         """
@@ -79,7 +79,7 @@ class ClusteringProvider(QgsProcessingProvider):
 
         This string should be short (e.g. "Lastools") and localised.
         """
-        return self.tr('clustering')
+        return self.tr('ClusterMap')
 
     def icon(self):
         """

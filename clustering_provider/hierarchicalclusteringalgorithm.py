@@ -30,8 +30,8 @@ from qgis.core import (QgsProcessing,
 #from qgis import processing
 from sklearn.cluster import AgglomerativeClustering
 from processing.gui.wrappers import WidgetWrapper
-from clustering.gui.ProcessingUI.hierarchicalWrapper import hierarchicalWrapper
-from clustering.classification.classification import classification
+from ClusterMap.gui.ProcessingUI.hierarchicalWrapper import hierarchicalWrapper
+from ClusterMap.classification.classification import classification
 
 class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 	"""

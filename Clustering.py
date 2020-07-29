@@ -38,14 +38,6 @@ from .resources import *
 # Import the code for the dialog
 #from .Clustering_dialog import ClusteringDialog
 
-#import requirements
-try:
-	import sklearn
-	import numpy
-	import matplotlib
-except:
-	from clustering.requirements import requirements
-	requirements()
 
 class Clustering:
 	"""QGIS Plugin Implementation."""
@@ -94,7 +86,7 @@ class Clustering:
 		:rtype: QString
 		"""
 		# noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-		return QCoreApplication.translate('Clustering', message)
+		return QCoreApplication.translate('ClusterMap', message)
 
 	
 	def initGui(self):
