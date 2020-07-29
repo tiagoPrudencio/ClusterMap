@@ -26,7 +26,7 @@ repository=http://repo
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags= python, Clustering, k-means, Hierarchical, Choropleth Maps
+tags= python,k-means, Hierarchical, Choropleth Maps
 
 homepage=http://homepage
 category=Plugins
