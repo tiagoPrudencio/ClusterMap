@@ -74,18 +74,11 @@ class hierarchicalWidget(QtWidgets.QWidget, FORM_CLASS):
 	@pyqtSlot(bool)
 	def on_radioButton_1_toggled(self):
 		if self.radioButton_1.isChecked():
+			self.radioButton_5.setChecked(True)
 			self.radioButton_6.setEnabled(False)
 		else:
 			self.radioButton_6.setEnabled(True)
 
-	#@pyqtSlot(bool)
-	#def on_pushButton_clicked(self):
-		#try:
-			#self.setParameter()
-			#self.X = self.get_data_from_source()
-			#createGraph(self.X,self.method).createDendrogram()
-		#except:
-			#self.messsage_box = QMessageBox.warning(self,"Kmeans", 'choose at least one attribute')
    
 	def setParameter(self):
 		methods =[self.radioButton_1,self.radioButton_2,self.radioButton_3,self.radioButton_4]

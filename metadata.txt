@@ -7,7 +7,7 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Clustering
+name=ClusterMap
 qgisMinimumVersion=3.0
 description=Receives polygon shapefile as input and applies clustering methods for the generation of choropleth maps 
 version=0.1
@@ -26,7 +26,7 @@ repository=http://repo
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags= python, Clustering, k-means, Hierarchical, Choropleth Maps
 
 homepage=http://homepage
 category=Plugins
@@ -36,4 +36,5 @@ experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
+
 plugin_dependencies=numpy,scikit-learn,matplotlib
