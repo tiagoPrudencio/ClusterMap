@@ -40,7 +40,7 @@ from .resources import *
 
 
 
-class Clustering:
+class ClusterMap:
 	"""QGIS Plugin Implementation."""
 
 	def __init__(self,iface):

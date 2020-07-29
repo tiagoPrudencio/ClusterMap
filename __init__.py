@@ -33,5 +33,5 @@ def classFactory(iface):  # pylint: disable=invalid-name
     """
     #
     #from .Clustering import Clustering
-    from.ClusterMap import Clustering
-    return Clustering(iface)
+    from .ClusterMap import ClusterMap
+    return ClusterMap(iface)
