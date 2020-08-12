@@ -246,7 +246,7 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 		should provide a basic description about what the algorithm does and the
 		parameters and outputs associated with it..
 		"""
-		return self.tr('Hierarchical clustering \nGeneral family of clustering algorithms that build nested clusters by merging or splitting them successively. This hierarchy of clusters is represented as a tree (or dendrogram). The root of the tree is the unique cluster that gathers all the samples, the leaves being the clusters with only one sample ')
+		return self.tr('Hierarchical clustering \nGeneral family of clustering algorithms that build nested clusters by merging them successively. This hierarchy of clusters is represented as a tree (or dendrogram). The root of the tree is the unique cluster that gathers all the samples, the leaves being the clusters with its corresponding samples')
 
 class ParameterLayer(QgsProcessingParameterDefinition):
 
