@@ -1,4 +1,4 @@
-from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.metrics import  silhouette_score
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np

@@ -30,6 +30,7 @@ from sklearn.cluster import KMeans
 from processing.gui.wrappers import WidgetWrapper
 from ClusterMap.gui.ProcessingUI.kmeansWrapper import kmeansWrapper
 from ClusterMap.classification.classification import classification
+from sklearn.metrics import  silhouette_score
 
 
 
@@ -184,7 +185,10 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 
 			# Update the progress bar
 			feedback.setProgress(int(current * total))
- 
+
+		score  = silhouette_score(X, kmeans.labels_, metric='euclidean')
+		feedback.pushInfo('The average silhouette_score is: '+ str(score)+'\n')
+
 		legends = classification(X_,kmeans.labels_,attr).decisionTree()
 		feedback.pushInfo('Rules of a Decision Tree:'+'\n')
 		for legend in sorted(legends):
