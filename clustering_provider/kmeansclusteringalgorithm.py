@@ -35,7 +35,8 @@ from sklearn.cluster import KMeans
 from processing.gui.wrappers import WidgetWrapper
 from ClusterMap.gui.ProcessingUI.kmeansWrapper import kmeansWrapper
 from ClusterMap.classification.classification import classification
-from sklearn.metrics import  silhouette_score
+from sklearn.metrics import  silhouette_score, silhouette_samples
+import numpy as np
 
 
 
@@ -191,15 +192,22 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 			# Update the progress bar
 			feedback.setProgress(int(current * total))
 
+		feedback.pushInfo('\n####### THE AVERAGE SILLHOUETTE SCORE EACH CLUSTER ####### \n')
+		sample_silhouette_values = silhouette_samples(X, kmeans.labels_, metric = 'euclidean')	
+		for i in range(n_clusters):
+			value = np.mean(sample_silhouette_values[kmeans.labels_ == i])
+			feedback.pushInfo('Cluster ' + str(i) + ' the average silhouette_score is: '+ str(value) +'\n')
+
 		score  = silhouette_score(X, kmeans.labels_, metric='euclidean')
-		feedback.pushInfo('The average silhouette_score is: '+ str(score)+'\n')
+		feedback.pushInfo('\n####### THE AVERAGE TOTAL SILLHOUETTE SCORE ####### \n')
+		feedback.pushInfo('The average total silhouette_score is: '+ str(score)+'\n')
 
 		self.legends = classification(X_,kmeans.labels_,attr).decisionTree()
 
-		feedback.pushInfo('Rules of a Decision Tree:'+'\n')
+		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 
 		for i in sorted(self.legends.keys()):
-			feedback.pushInfo('class ' + i + ': ' + self.legends[i] + '\n')
+			feedback.pushInfo('Class ' + i + ': ' + self.legends[i] + '\n')
 	
 		self.dest_id=dest_id
 		return {self.OUTPUT: dest_id}
@@ -291,7 +299,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		should provide a basic description about what the algorithm does and the
 		parameters and outputs associated with it..
 		"""
-		return self.tr("Algorithm clusters data by trying to separate samples in n groups of equal variance, minimizing a criterion known as the inertia or within-cluster sum-of-squares")
+		return self.tr("The k-means method finds k different clusters in the data set. The center of each cluster will be called a centroid and will have the average of the values in this cluster. The task of the algorithm is to find the nearest centroid (using euclidian distance) and assign the point found to that cluster. Centroids are updated always taking the average value of all points in that cluster. For this method, numerical values are needed to calculate the distance, the nominal values can then be mapped into binary values for the same calculation. In case of success, the data are separated organically and can thus be labeled and centroid become a reference to classify new dataares")
 
 class ParameterLayer(QgsProcessingParameterDefinition):
 

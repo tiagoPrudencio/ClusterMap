@@ -37,6 +37,8 @@ from sklearn.cluster import AgglomerativeClustering
 from processing.gui.wrappers import WidgetWrapper
 from ClusterMap.gui.ProcessingUI.hierarchicalWrapper import hierarchicalWrapper
 from ClusterMap.classification.classification import classification
+from sklearn.metrics import  silhouette_score, silhouette_samples
+import numpy as np
 
 class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 	"""
@@ -193,8 +195,18 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 			# Update the progress bar
 			feedback.setProgress(int(current * total))
 
+		feedback.pushInfo('\n####### THE AVERAGE SILLHOUETTE SCORE EACH CLUSTER ####### \n')
+		sample_silhouette_values = silhouette_samples(X, model.labels_, metric = metric)	
+		for i in range(n_clusters):
+			value = np.mean(sample_silhouette_values[model.labels_ == i])
+			feedback.pushInfo('Cluster ' + str(i) + ' the average silhouette_score is: '+ str(value) +'\n')
+
+		score  = silhouette_score(X, model.labels_, metric= metric)
+		feedback.pushInfo('\n####### THE AVERAGE TOTAL SILLHOUETTE SCORE ####### \n')
+		feedback.pushInfo('The average total silhouette_score is: '+ str(score)+'\n')
+
 		self.legends = classification(X_,model.labels_,attr).decisionTree()
-		feedback.pushInfo('Rules of a Decision Tree:'+'\n')
+		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 		for i in sorted(self.legends.keys()):
 			feedback.pushInfo('class ' + i + ': ' + self.legends[i] + '\n')
 		
@@ -288,7 +300,7 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 		should provide a basic description about what the algorithm does and the
 		parameters and outputs associated with it..
 		"""
-		return self.tr('Hierarchical clustering \nGeneral family of clustering algorithms that build nested clusters by merging them successively. This hierarchy of clusters is represented as a tree (or dendrogram). The root of the tree is the unique cluster that gathers all the samples, the leaves being the clusters with its corresponding samples')
+		return self.tr('Hierarchical clustering method is an algorithm that groups similar objects into groups called clusters. It starts by treating each observation as a separate cluster. Then, it repeatedly executes two steps: identify the two clusters that are closest together, and merge the two most similar clusters. This iterative process continues until all the clusters are merged together. The endpoint is a set of clusters, where each cluster is distinct from each other cluster, and the objects within each cluster are broadly similar to each other.')
 
 class ParameterLayer(QgsProcessingParameterDefinition):
 
