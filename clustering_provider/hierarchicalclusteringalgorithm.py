@@ -12,6 +12,7 @@
 """
 
 from qgis.PyQt.QtCore import QCoreApplication, QVariant
+from PyQt5.QtGui import QColor
 from qgis.core import (QgsProcessing,
 					   QgsFeatureSink,
 					   QgsProcessingException,
@@ -25,7 +26,11 @@ from qgis.core import (QgsProcessing,
 					   QgsField,
 					   QgsVectorLayerUtils,
 					   QgsFeature,
-					   QgsProcessingFeedback
+					   QgsProcessingFeedback,
+					   QgsSymbol,
+					   QgsRendererCategory,
+					   QgsCategorizedSymbolRenderer,
+					   QgsProcessingUtils
 					   )
 #from qgis import processing
 from sklearn.cluster import AgglomerativeClustering
@@ -188,14 +193,51 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 			# Update the progress bar
 			feedback.setProgress(int(current * total))
 
-		legends = classification(X_,model.labels_,attr).decisionTree()
+		self.legends = classification(X_,model.labels_,attr).decisionTree()
 		feedback.pushInfo('Rules of a Decision Tree:'+'\n')
-		for legend in sorted(legends):
-			feedback.pushInfo(legend+'\n')
+		for i in sorted(self.legends.keys()):
+			feedback.pushInfo('class ' + i + ': ' + self.legends[i] + '\n')
 		
+		self.dest_id=dest_id
 		return {self.OUTPUT: dest_id}
 
+	def postProcessAlgorithm(self, context, feedback):
+		output = QgsProcessingUtils.mapLayerFromString(self.dest_id, context)
 	
+		my_classes = {0: list([[43,131,186,255]]),
+			  1: list([[241,96,93,255]]),
+			  2: list([[157,211,167,255]]),
+			  3: list([[237,248,185,255]]),
+			  4: list([[232,221,58,255]]),
+			  5: list([[249,158,89,255]]),
+			  6: list([[108,206,89,255]]),
+			  7: list([[137,107,178,255]]),
+			  8: list([[205,63,113,255]]),
+			  9: list([[215,25,28,255]])
+			  }
+
+		rules = dict()
+		for i in range(len(self.legends.keys())):
+			my_classes[i].append(self.legends[str(i)])
+			rules[i] = my_classes[i]
+
+		categories = []
+		for class_value, (symbol_property, label_text) in rules.items():
+
+			# get default symbol for this geometry type
+			symbol = QgsSymbol.defaultSymbol(output.geometryType())
+
+			# symbol.set*(symbol_property)
+			symbol.setColor(QColor(symbol_property[0],symbol_property[1],symbol_property[2],symbol_property[3]))
+
+			# create a category with these properties
+			category = QgsRendererCategory(class_value, symbol, label_text)
+			categories.append(category)
+
+		mi_rend = QgsCategorizedSymbolRenderer('cluster', categories) 
+		output.setRenderer(mi_rend)
+		output.triggerRepaint()
+		return {self.OUTPUT: self.dest_id}
 	
 	def tr(self, string):
 		"""

@@ -86,13 +86,16 @@ class classification ():
 				if dec.toarray()[0][i] == 1:
 					samples[i].append(d)
 
-		legend = list()
+		legend = dict()
 		for i in rules.keys():
-			rules_ = dict()
 			moda = (str(statistics.mode(clf.predict([self.X[j] for j in samples[i]]))))
-			legend.append('class '+moda+' : ' +rules[i])
+			if moda in legend.keys():
+				aux = legend[moda]
+				legend[moda] = aux + ' OR \n' + rules[i]
+			else:
+				legend[moda] = rules[i]
 	
-		return legend
+		return (legend)
 
 	
 		
