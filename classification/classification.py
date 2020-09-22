@@ -1,22 +1,20 @@
+"""
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
+
 from sklearn import tree
 import numpy as np
 import collections
 import statistics
 
-'''
-import tempfile
-import os
-r = export_text(decision_tree,feature_names=attr)
- with tempfile.TemporaryFile(suffix=".png",delete=False) as tmpfile:
-			plt.figure()
-			tree.plot_tree(decision_tree,feature_names=attr)
-			plt.savefig(tmpfile, format="png") # File position is at the end of the file.
-			tmpfile.seek(0) # Rewind the file. (0: the beginning of the file)
-			tfName = tmpfile.name
-			os.startfile(tfName)
-			tmpfile.close()
-		feedback.pushInfo('Rules of a Decision Tree:'+'\n'+r )
-'''
+
 class classification ():
 	def __init__(self,X,Y,attr):
 		self.X = X
@@ -87,15 +85,23 @@ class classification ():
 					samples[i].append(d)
 
 		legend = dict()
+		rules_tree = dict()
 		for i in rules.keys():
 			moda = (str(statistics.mode(clf.predict([self.X[j] for j in samples[i]]))))
 			if moda in legend.keys():
 				aux = legend[moda]
 				legend[moda] = aux + ' OR \n' + rules[i]
+				rules_tree[moda].append([rules[i],len(samples[i])])
 			else:
 				legend[moda] = rules[i]
+				rules_tree[moda] = list()
+				rules_tree[moda].append([rules[i],len(samples[i])])
+
+		for b in rules_tree.keys():
+			aux  = [i[1] for i in rules_tree[b]]
+			rules_tree[b]=rules_tree[b][aux.index(max(aux))][0].rstrip()
 	
-		return (legend)
+		return legend, rules_tree
 
 	
 		

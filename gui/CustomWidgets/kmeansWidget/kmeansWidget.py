@@ -1,3 +1,14 @@
+"""
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
+
 from qgis.PyQt import QtWidgets, uic
 from qgis.utils import iface
 from qgis.core import *
@@ -88,7 +99,7 @@ class kmeansWidget(QtWidgets.QWidget, FORM_CLASS):
 		attributes = [self.listWidget_2.item(i).text() for i in range(self.listWidget_2.count())]
 		data = list()
 		for attr in attributes:
-			if feature[attr]  is None:
+			if isinstance(feature[attr], QVariant):
 				self.parameters['id'].append(feature.id())
 				data = None
 				break
@@ -105,7 +116,7 @@ class kmeansWidget(QtWidgets.QWidget, FORM_CLASS):
 			data = self.filterNull(feature)
 			if data is not None:
 				dataset.append(data)
-
+		
 		Standard_models = StandardScaler()
 		Standard_models.fit(np.array(dataset))
 		StandardX = Standard_models.transform(np.array(dataset))

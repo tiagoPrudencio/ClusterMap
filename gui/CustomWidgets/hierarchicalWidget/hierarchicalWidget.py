@@ -1,7 +1,18 @@
+"""
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
+
 from qgis.PyQt import QtWidgets, uic
 from qgis.utils import iface
 from qgis.core import *
-from qgis.PyQt.QtCore import pyqtSlot, pyqtSignal, QSettings, Qt
+from qgis.PyQt.QtCore import pyqtSlot, pyqtSignal, QSettings, Qt, QVariant
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtGui
 import os
@@ -91,7 +102,7 @@ class hierarchicalWidget(QtWidgets.QWidget, FORM_CLASS):
 		attributes = [self.listWidget_2.item(i).text() for i in range(self.listWidget_2.count())]
 		data = list()
 		for attr in attributes:
-			if feature[attr] is None:
+			if isinstance(feature[attr], QVariant):
 				self.parameters['id'].append(feature.id())
 				data = None
 				break

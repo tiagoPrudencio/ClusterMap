@@ -202,7 +202,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		feedback.pushInfo('\n####### THE AVERAGE TOTAL SILLHOUETTE SCORE ####### \n')
 		feedback.pushInfo('The average total silhouette_score is: '+ str(score)+'\n')
 
-		self.legends = classification(X_,kmeans.labels_,attr).decisionTree()
+		self.legends, self.rules_tree = classification(X_,kmeans.labels_,attr).decisionTree()
 
 		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 
@@ -212,6 +212,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		self.dest_id=dest_id
 		return {self.OUTPUT: dest_id}
 
+	# Create Symbol Renderer
 	def postProcessAlgorithm(self, context, feedback):
 		output = QgsProcessingUtils.mapLayerFromString(self.dest_id, context)
 	
@@ -228,8 +229,8 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 			  }
 
 		rules = dict()
-		for i in range(len(self.legends.keys())):
-			my_classes[i].append(self.legends[str(i)])
+		for i in range(len(self.rules_tree.keys())):
+			my_classes[i].append(self.rules_tree[str(i)])
 			rules[i] = my_classes[i]
 
 		categories = []
