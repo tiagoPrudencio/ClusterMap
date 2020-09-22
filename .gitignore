@@ -23,7 +23,6 @@
 *.doc
 *.docx
 *.rtf
-*.pdf
 *.html
 
 # following taken from https://help.github.com/articles/ignoring-files
