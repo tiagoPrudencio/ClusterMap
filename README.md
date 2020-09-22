@@ -30,6 +30,8 @@ You can follow the guidelines from tutorialPlugin.pdf for plugin installation (s
 
 You will find documentation about ClusterMap project from documentation.pdf. All documentation is in Portuguese.
 
+**Demonstrative video link:** https://www.youtube.com/watch?v=XU8C9e9WNd8&feature=youtu.be
+
 ## Developers
 
 * **Tiago P. Silvano** - *Cartographic Engineer* - tiagoprudencio16@gmail.com
