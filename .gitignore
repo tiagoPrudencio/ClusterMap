@@ -72,3 +72,6 @@ __pycache__/
 /Makefile.*
 /plugin_upload.*
 /pb_tool.*
+
+.idea/
+.idea
