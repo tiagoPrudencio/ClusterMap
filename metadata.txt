@@ -16,7 +16,7 @@ email=tiagoprudencio16@gmail.com
 
 about=The plugin receives polygon shapefile as input and applies clustering methods (k-mean and hierarchical clustering) for the generation of choropleth maps according to user-defined settings: attributes, similarity metric, and the number of clusters.
 
-tracker=http://bugs
+tracker=https://github.com/tiagoPrudencio/ClusterMap/issues
 repository= https://github.com/tiagoPrudencio/ClusterMap
 # End of mandatory metadata
 
@@ -28,7 +28,7 @@ repository= https://github.com/tiagoPrudencio/ClusterMap
 # Tags are comma separated with spaces allowed
 tags= python,k-means, Hierarchical, Choropleth Maps
 
-homepage=http://homepage
+homepage=https://github.com/tiagoPrudencio/ClusterMap
 category=Plugins
 icon=icon.png
 # experimental flag
