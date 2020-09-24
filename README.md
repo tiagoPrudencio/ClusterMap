@@ -24,11 +24,11 @@ You’ll need to install (or have installed):
   
 ## Installing
 
-You can follow the guidelines from tutorialPlugin.pdf for plugin installation (step by step)
+You can follow the guidelines from [tutorialPlugin.pdf](https://github.com/tiagoPrudencio/ClusterMap/blob/master/tutorialPlugin.pdf) for plugin installation (step by step)
 
 ## Documentation
 
-You will find documentation about ClusterMap project from documentation.pdf. All documentation is in Portuguese.
+You will find documentation about ClusterMap project from [documentation.pdf](https://github.com/tiagoPrudencio/ClusterMap/blob/master/documentation.pdf) . All documentation is in Portuguese.
 
 **Demonstrative video link:** https://www.youtube.com/watch?v=XU8C9e9WNd8&feature=youtu.be
 
