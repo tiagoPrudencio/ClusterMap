@@ -10,7 +10,7 @@
 name=ClusterMap
 qgisMinimumVersion=3.0
 description=Receives polygon shapefile as input and applies clustering methods for the generation of choropleth maps 
-version=0.1
+version=1.0
 author=Prudencio T. and Maia B.
 email=tiagoprudencio16@gmail.com
 
