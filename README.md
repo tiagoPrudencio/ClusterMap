@@ -1,5 +1,5 @@
 
-# Clustering Plugin ![qgislogo](https://user-images.githubusercontent.com/52215653/87997702-36d09580-cacc-11ea-841f-5e5d0cf1b592.png)
+# ClusterMap Plugin ![qgislogo](https://user-images.githubusercontent.com/52215653/87997702-36d09580-cacc-11ea-841f-5e5d0cf1b592.png)
 
 This plugin was developed on Open Source QGIS software, allowing users to analyze multivariate data through of clustering methods (k-means and hierarchical),  in addition to allowing the visualization of the clusters from choropleth maps. 
 
