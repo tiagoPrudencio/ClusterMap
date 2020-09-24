@@ -30,7 +30,7 @@ from qgis.core import QgsProcessingAlgorithm, QgsApplication
 import processing
 import os.path
 from .clustering_provider.clustering_provider import ClusteringProvider
-import sys
+#import sys
 
 # Initialize Qt resources from file resources.py
 from .resources import *
@@ -71,7 +71,8 @@ class ClusterMap:
 
 		# Declare instance attributes
 		self.actions = []
-		self.provider = ClusteringProvider()
+		#self.provider = ClusteringProvider()
+
 
 	
 	# noinspection PyMethodMayBeStatic
@@ -89,13 +90,47 @@ class ClusterMap:
 		# noinspection PyTypeChecker,PyArgumentList,PyCallByClass
 		return QCoreApplication.translate('ClusterMap', message)
 
+	def initProcessing(self):
+	  self.provider = ClusteringProvider()
+	  QgsApplication.processingRegistry().addProvider(self.provider)
 	
 	def initGui(self):
 		"""Create the menu entries and toolbar icons inside the QGIS GUI."""
-		QgsApplication.processingRegistry().addProvider(self.provider)
+		#QgsApplication.processingRegistry().addProvider(self.provider)
+		self.initProcessing()
+		
+		actionMeans = QAction(
+			QIcon(os.path.join(os.path.dirname(__file__),'clustering_provider/cluster2.png')),
+			u"K-Means Clustering", self.iface.mainWindow())
+		actionMeans.triggered.connect(self.runKmeans)
+		
+
+		actionHierarchical = QAction(
+			QIcon(os.path.join(os.path.dirname(__file__),'clustering_provider/hierarquico.png')),
+			u"Hierarchical Clustering", self.iface.mainWindow())
+		actionHierarchical.triggered.connect(self.runHierarchical)
+
+		self.actions = [actionMeans,actionHierarchical]
+		for action in self.actions:
+			self.iface.addPluginToVectorMenu(u"&ClusterMap", action)
+			self.iface.addToolBarIcon(action)
+		
+
 
 	def unload(self):
 		QgsApplication.processingRegistry().removeProvider(self.provider)
+				
+		for action in self.actions:
+			self.iface.removeToolBarIcon(action)
+			self.iface.removePluginVectorMenu(u"&ClusterMap", action)
+			del action
+
+
+	def runKmeans(self):
+		processing.execAlgorithmDialog("ClusterMap:kmeansclustering")
+
+	def runHierarchical(self):
+		processing.execAlgorithmDialog("ClusterMap:hierarchicalclustering")
 	  
 
 

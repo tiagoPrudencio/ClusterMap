@@ -31,6 +31,9 @@ from qgis.core import (QgsProcessing,
 					   QgsProcessingUtils
 					   )
 #from qgis import processing
+import os
+import inspect
+from qgis.PyQt.QtGui import QIcon
 from sklearn.cluster import KMeans
 from processing.gui.wrappers import WidgetWrapper
 from ClusterMap.gui.ProcessingUI.kmeansWrapper import kmeansWrapper
@@ -202,7 +205,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		feedback.pushInfo('\n####### THE AVERAGE TOTAL SILLHOUETTE SCORE ####### \n')
 		feedback.pushInfo('The average total silhouette_score is: '+ str(score)+'\n')
 
-		self.legends, self.rules_tree = classification(X_,kmeans.labels_,attr).decisionTree()
+		self.legends = classification(X_,kmeans.labels_,attr).decisionTree()
 
 		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 
@@ -229,8 +232,8 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 			  }
 
 		rules = dict()
-		for i in range(len(self.rules_tree.keys())):
-			my_classes[i].append(self.rules_tree[str(i)])
+		for i in range(len(self.legends.keys())):
+			my_classes[i].append(self.legends[str(i)])
 			rules[i] = my_classes[i]
 
 		categories = []
@@ -293,6 +296,16 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		formatting characters.
 		"""
 		return 'clusteringmethods'
+
+	def icon(self):
+		"""
+		Should return a QIcon which is used for your provider inside
+		the Processing toolbox.
+		"""
+		cmd_folder = os.path.split(inspect.getfile(inspect.currentframe()))[0]
+		icon = QIcon(os.path.join(os.path.join(cmd_folder, 'cluster2.png')))
+		return icon
+
 
 	def shortHelpString(self):
 		"""

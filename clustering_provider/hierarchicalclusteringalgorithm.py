@@ -33,6 +33,9 @@ from qgis.core import (QgsProcessing,
 					   QgsProcessingUtils
 					   )
 #from qgis import processing
+import os
+import inspect
+from qgis.PyQt.QtGui import QIcon
 from sklearn.cluster import AgglomerativeClustering
 from processing.gui.wrappers import WidgetWrapper
 from ClusterMap.gui.ProcessingUI.hierarchicalWrapper import hierarchicalWrapper
@@ -205,7 +208,8 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 		feedback.pushInfo('\n####### THE AVERAGE TOTAL SILLHOUETTE SCORE ####### \n')
 		feedback.pushInfo('The average total silhouette_score is: '+ str(score)+'\n')
 
-		self.legends, self.rules_tree = classification(X_,model.labels_,attr).decisionTree()
+		self.legends = classification(X_,model.labels_,attr).decisionTree()
+
 		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 		for i in sorted(self.legends.keys()):
 			feedback.pushInfo('class ' + i + ': ' + self.legends[i] + '\n')
@@ -230,8 +234,8 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 			  }
 
 		rules = dict()
-		for i in range(len(self.rules_tree.keys())):
-			my_classes[i].append(self.rules_tree[str(i)])
+		for i in range(len(self.legends.keys())):
+			my_classes[i].append(self.legends[str(i)])
 			rules[i] = my_classes[i]
 
 		categories = []
@@ -294,6 +298,15 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 		formatting characters.
 		"""
 		return 'clusteringmethods'
+
+	def icon(self):
+		"""
+		Should return a QIcon which is used for your provider inside
+		the Processing toolbox.
+		"""
+		cmd_folder = os.path.split(inspect.getfile(inspect.currentframe()))[0]
+		icon = QIcon(os.path.join(os.path.join(cmd_folder, 'hierarquico.png')))
+		return icon
 
 	def shortHelpString(self):
 		"""

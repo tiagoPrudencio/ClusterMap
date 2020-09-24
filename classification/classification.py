@@ -85,23 +85,16 @@ class classification ():
 					samples[i].append(d)
 
 		legend = dict()
-		rules_tree = dict()
 		for i in rules.keys():
 			moda = (str(statistics.mode(clf.predict([self.X[j] for j in samples[i]]))))
 			if moda in legend.keys():
 				aux = legend[moda]
 				legend[moda] = aux + ' OR \n' + rules[i]
-				rules_tree[moda].append([rules[i],len(samples[i])])
+
 			else:
 				legend[moda] = rules[i]
-				rules_tree[moda] = list()
-				rules_tree[moda].append([rules[i],len(samples[i])])
-
-		for b in rules_tree.keys():
-			aux  = [i[1] for i in rules_tree[b]]
-			rules_tree[b]=rules_tree[b][aux.index(max(aux))][0].rstrip()
 	
-		return legend, rules_tree
+		return legend
 
 	
 		
