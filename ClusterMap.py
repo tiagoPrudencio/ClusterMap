@@ -30,13 +30,11 @@ from qgis.core import QgsProcessingAlgorithm, QgsApplication
 import processing
 import os.path
 from .clustering_provider.clustering_provider import ClusteringProvider
-#import sys
 
 # Initialize Qt resources from file resources.py
 from .resources import *
 
-# Import the code for the dialog
-#from .Clustering_dialog import ClusteringDialog
+
 
 
 
