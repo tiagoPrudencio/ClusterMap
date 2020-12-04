@@ -31,6 +31,7 @@ from qgis.core import (QgsProcessing,
 					   QgsProcessingParameterFeatureSource,
 					   QgsProcessingParameterDefinition,
 					   QgsProcessingParameterFeatureSink,
+					   QgsProcessingParameterBoolean,
 					   QgsProcessingParameterField,
 					   QgsProcessingParameterNumber,
 					   QgsField,
@@ -74,6 +75,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 
 	PARAMETERS = 'PARAMETERS'
 	N_CLUSTERS = 'N_CLUSTERS'
+	APPLY_LEGEND = 'APPLY_LEGEND'
 	OUTPUT = 'OUTPUT'
 	
 	def initAlgorithm(self, config=None):
@@ -105,6 +107,15 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 				defaultValue=2,
 				minValue=2,
 				maxValue=10
+			)
+		)
+
+		self.addParameter(
+			QgsProcessingParameterBoolean(
+				self.APPLY_LEGEND,
+				self.tr('Apply legend on output'),
+				isOptional=False,
+				defaultValue=True
 			)
 		)
 
@@ -145,6 +156,12 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		n_clusters = self.parameterAsInt(
 			parameters,
 			self.N_CLUSTERS,
+			context
+		)
+
+		self.build_legend = self.parameterAsBoolean(
+			parameters,
+			self.APPLY_LEGEND,
 			context
 		)
 
@@ -216,6 +233,9 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		feedback.pushInfo('\n####### THE AVERAGE TOTAL SILLHOUETTE SCORE ####### \n')
 		feedback.pushInfo('The average total silhouette_score is: '+ str(score)+'\n')
 
+		if not self.build_legend:
+			return {self.OUTPUT: dest_id}
+
 		self.legends = classification(X_,kmeans.labels_,attr).decisionTree()
 
 		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
@@ -228,6 +248,9 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 
 	# Create Symbol Renderer
 	def postProcessAlgorithm(self, context, feedback):
+		if not self.build_legend:
+			return {self.OUTPUT: self.dest_id}
+
 		output = QgsProcessingUtils.mapLayerFromString(self.dest_id, context)
 	
 		my_classes = {0: list([[43,131,186,255]]),
