@@ -30,7 +30,7 @@ You can follow the guidelines from [tutorialPlugin.pdf](https://github.com/tiago
 
 You will find documentation about ClusterMap project from [project.pdf](https://github.com/tiagoPrudencio/ClusterMap/blob/master/project.pdf) . All documentation is in Portuguese.
 
-Demo Abstract XXI GEOINFO 202 http://urlib.net/rep/8JMKD3MGPDW34P/43PR3JS
+Demo Abstract XXI GEOINFO 2020 http://urlib.net/rep/8JMKD3MGPDW34P/43PR3JS
 
 **Demonstrative video link:** https://www.youtube.com/watch?v=XU8C9e9WNd8&feature=youtu.be
 
