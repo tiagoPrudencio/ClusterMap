@@ -38,5 +38,6 @@ Demo Abstract XXI GEOINFO 2020 http://urlib.net/rep/8JMKD3MGPDW34P/43PR3JS
 
 * **Tiago P. Silvano** - *Cartographic Engineer* - tiagoprudencio16@gmail.com
 * **Bryan M. Correa** - *Cartographic Engineer* - bryan.maia.c7@gmail.com
+* **Philipe Borba** - *Cartographic Engineer* - borba.philipe@eb.mil.br
 
     
