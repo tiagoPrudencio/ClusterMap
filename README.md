@@ -17,14 +17,10 @@ You’ll need to install (or have installed):
     - [X] Matplotlib
     - [X] Scikit-learn
   
-  To install python packages, use requirements.txt file in **OSGEO4W** shell. The requirements file contains a list of packages to be installed using pip install.
+  To install python packages, open OSGeo4W Shell in your QGIS installation root folder to install with pip.
   
-  **Windows:** https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/
+  **Windows:** python3.exe -m pip install scikit-learn, matplotlib, numpy
  
-  
-## Installing
-
-You can follow the guidelines from [tutorialPlugin.pdf](https://github.com/tiagoPrudencio/ClusterMap/blob/master/tutorialPlugin.pdf) for plugin installation (step by step)
 
 ## Documentation
 
