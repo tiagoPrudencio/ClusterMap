@@ -182,7 +182,7 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 		#X = self.get_data_from_source(source, attributeList)
 		model = AgglomerativeClustering(
 			n_clusters=n_clusters,
-			affinity=metric,
+			metric=metric,
 			linkage=method).fit(X)
 
 		current=0
@@ -223,7 +223,7 @@ class HierarchicalClusteringAlgorithm(QgsProcessingAlgorithm):
 
 		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 		for i in sorted(self.legends.keys()):
-			feedback.pushInfo('class ' + i + ': ' + self.legends[i] + '\n')
+			feedback.pushInfo('class ' + i + ': \n' + self.legends[i] + '\n')
 		
 		self.dest_id=dest_id
 		return {self.OUTPUT: dest_id}

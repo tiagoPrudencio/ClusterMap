@@ -1,8 +1,4 @@
 # This file contains metadata for your plugin. Since 
-# version 2.0 of QGIS this is the proper way to supply 
-# information about a plugin. The old method of 
-# embedding metadata in __init__.py will 
-# is no longer supported since version 2.0.
 
 # This file should be included when you package your plugin.# Mandatory items:
 
@@ -10,8 +6,8 @@
 name=ClusterMap
 qgisMinimumVersion=3.0
 description=Receives polygon shapefile as input and applies clustering methods for the generation of choropleth maps 
-version=1.0
-author=Prudencio T. and Maia B.
+version=1.2
+author=Tiago Prudencio, Maia B.
 email=tiagoprudencio16@gmail.com
 
 about=The plugin receives polygon shapefile as input and applies clustering methods (k-mean and hierarchical clustering) for the generation of choropleth maps according to user-defined settings: attributes, similarity metric, and the number of clusters.
@@ -22,19 +18,31 @@ repository= https://github.com/tiagoPrudencio/ClusterMap
 
 # Recommended items:
 
+hasProcessingProvider=yes
 # Uncomment the following line and add your changelog:
 # changelog=
+	1.2 - Install scikit-learn package changes
+	1.0 - Initial version
 
 # Tags are comma separated with spaces allowed
 tags= python,k-means, Hierarchical, Choropleth Maps
 
 homepage=https://github.com/tiagoPrudencio/ClusterMap
 category=Plugins
-icon=icon.png
+icon=clustering_provider/map.png
 # experimental flag
 experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
 
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
 plugin_dependencies=numpy,scikit-learn,matplotlib
+
+Category of the plugin: Vector, Database or Web
+# category= Processing
+
+# If the plugin can run on QGIS Server.
+server=False

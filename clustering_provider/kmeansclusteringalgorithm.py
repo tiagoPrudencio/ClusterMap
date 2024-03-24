@@ -221,7 +221,7 @@ class KMeansClusteringAlgorithm(QgsProcessingAlgorithm):
 		feedback.pushInfo('\n####### RULES OF A DECISION TREE #######'+'\n')
 
 		for i in sorted(self.legends.keys()):
-			feedback.pushInfo('Class ' + i + ': ' + self.legends[i] + '\n')
+			feedback.pushInfo('Class ' + i + ':\n ' + self.legends[i] + '\n')
 	
 		self.dest_id=dest_id
 		return {self.OUTPUT: dest_id}
